@@ -3,9 +3,12 @@ import React, { Component } from 'react';
 import Navbar from './Navbar'
 import Main from './Main'
 import Web3 from 'web3';
-import './App.css';
+
 import  { uploadFileToIPFS }  from './pinata.js'
 import { createAlchemyWeb3 } from '@alch/alchemy-web3';
+import Cards from './Cards';
+
+
 
 
 // const ipfsClient = require('ipfs-http-client')
@@ -295,9 +298,11 @@ const num = 69 ;
           <p>File Type : {this.state.fileType}</p>
           <p>File Name : {this.state.fileName}</p>
           <p>File Description : {this.state.fileDescription}</p>
-          <p>Upload Time: {this.state.uploadTime}</p>
-      <p>Uploader: {this.state.uploader}</p>
-              </div>
+          <p>Upload Time: {this.state.uploadTime}</p>          
+          <p>Uploader: {this.state.uploader}</p>
+          <Cards/>
+       </div>
+      
 
       </div>
     );
