@@ -290,7 +290,7 @@ const num = 69 ;
   <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
     <div class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
       <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">Decentralised Storage
-        <p class="hidden lg:inline-block">readymade gluten</p>
+        <p class="hidden lg:inline-block"></p>
       </h1>
       <p class="mb-8 leading-relaxed">Decentralized storage refers to a system where data is stored across a network of computers rather than in a centralized location. It offers improved data security, privacy, and reliability by distributing data across multiple nodes. Users can access their data from any node, and no single point of failure exists. It promotes a more resilient and censorship-resistant approach to data storage and retrieval.</p>
       <div class="flex justify-center">
@@ -369,7 +369,7 @@ const num = 69 ;
                  uploader="Uploader"
                  uploaderValue={this.state.uploader}/>
        </div>
-      
+      <div></div>
 
       </div>
     );
