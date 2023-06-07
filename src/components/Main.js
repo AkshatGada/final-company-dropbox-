@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { convertBytes } from './helpers';
+
 import moment from 'moment'
 
 class Main extends Component {
@@ -35,7 +36,7 @@ class Main extends Component {
               <p>&nbsp;</p>
               <table className="table-sm table-bordered text-monospace" style={{ width: '1000px', maxHeight: '450px'}}>
                 <thead style={{ 'fontSize': '15px' }}>
-                  <tr className="bg-dark text-white">
+                  {/* <tr className="bg-dark text-white">
                     <th scope="col" style={{ width: '10px'}}>id</th>
                     <th scope="col" style={{ width: '200px'}}>name</th>
                     <th scope="col" style={{ width: '230px'}}>description</th>
@@ -44,7 +45,7 @@ class Main extends Component {
                     <th scope="col" style={{ width: '90px'}}>date</th>
                     <th scope="col" style={{ width: '120px'}}>uploader/view</th>
                     <th scope="col" style={{ width: '120px'}}>hash/view/get</th>
-                  </tr>
+                  </tr> */}
                 </thead>
                 { this.props.files.map((file, key) => {
                   return(
@@ -52,6 +53,7 @@ class Main extends Component {
                       <tr>
                         <td>{file.fileId}</td>
                         <td>{file.fileName}</td>
+                        
                         <td>{file.fileDescription}</td>
                         <td>{file.fileType}</td>
                         <td>{convertBytes(file.fileSize)}</td>

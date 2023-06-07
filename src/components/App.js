@@ -3,9 +3,12 @@ import React, { Component } from 'react';
 import Navbar from './Navbar'
 import Main from './Main'
 import Web3 from 'web3';
-import './App.css';
+
 import  { uploadFileToIPFS }  from './pinata.js'
 import { createAlchemyWeb3 } from '@alch/alchemy-web3';
+import Cards from './Cards';
+
+
 
 
 // const ipfsClient = require('ipfs-http-client')
@@ -275,7 +278,29 @@ const num = 69 ;
     return (
       <div>
         <Navbar account={this.state.account} />
-        { this.state.loading
+        {/* { this.state.loading
+          ? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
+          : <Main
+              files={this.state.files}
+              captureFile={this.captureFile}
+              uploadFile={this.uploadFile}
+            />
+        } */}
+        <section class="text-gray-600 body-font">
+  <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
+    <div class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
+      <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">Decentralised Storage
+        <p class="hidden lg:inline-block"></p>
+      </h1>
+      <p class="mb-8 leading-relaxed">Decentralized storage refers to a system where data is stored across a network of computers rather than in a centralized location. It offers improved data security, privacy, and reliability by distributing data across multiple nodes. Users can access their data from any node, and no single point of failure exists. It promotes a more resilient and censorship-resistant approach to data storage and retrieval.</p>
+      <div class="flex justify-center">
+      <button  class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onClick={() => this.loadeverythingup()}>LOAD EVERYTHING UP</button>
+      <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onClick={() => this.getFileHash()}>HASH</button>
+      <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onClick={() => this.check()}>CHECK</button>
+      </div>
+    </div>
+    <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
+    { this.state.loading
           ? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
           : <Main
               files={this.state.files}
@@ -283,21 +308,68 @@ const num = 69 ;
               uploadFile={this.uploadFile}
             />
         }
-        <button onClick={() => this.loadeverythingup()}>LOAD EVERYTHING UP</button><br></br><br></br>
-        <button onClick={() => this.getFileHash()}>HASH</button><br></br><br></br>
-
-        <button onClick={() => this.check()}>CHECK</button>
+    </div>
+  </div>
+</section>
+        <div className="banner">
+        <div class="flex">
+  <div class="w-1/3  h-12">
+  
+  </div>
+  <div class="w-1/3  h-12">
+ 
+  </div>
+  <div class="w-1/3  h-12">
+ 
+  </div>
+</div>
+        <div class="flex mb-2">
+  <div class="flex-1 ">
+  
+  </div>
+  <div class="flex-1 ">
+  
+  </div>
+  <div class="flex-1 ">
+  
+  </div>
+  {/* <div class="flex-1 bg-gray-500 h-12"></div>
+  <div class="flex-1 bg-gray-400 h-12"></div> */}
+</div>
+        
+       
         <div>
-          <h1>File INFO</h1>
-          <p>File ID : {this.state.fileId}</p>
+        </div>
+        <div class="px-2">
+  
+</div>
+<h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">File Info</h1>
+          {/* <p>File ID : {this.state.fileId}</p>
           <p>File hash : {this.state.fileHash}</p>
           <p>File Size : {this.state.fileSize}</p>
           <p>File Type : {this.state.fileType}</p>
           <p>File Name : {this.state.fileName}</p>
           <p>File Description : {this.state.fileDescription}</p>
-          <p>Upload Time: {this.state.uploadTime}</p>
-      <p>Uploader: {this.state.uploader}</p>
-              </div>
+          <p>Upload Time: {this.state.uploadTime}</p>          
+          <p>Uploader: {this.state.uploader}</p> */}
+          <Cards id="File ID"
+                 idvalue={this.state.fileId}
+                 hash="File Hash"
+                 hashValue={this.state.fileHash}
+                 size="File Size"
+                 sizeValue={this.state.fileSize}
+                 type="File type"
+                 typeValue={this.state.fileType}
+                 name="File Name"
+                 nameValue={this.state.fileName}
+                 description="File Description"
+                 descriptionValue={this.state.fileDescription}
+                 uploadTime="Upload Time"
+                 uploadTimeValue={this.state.uploadTime}
+                 uploader="Uploader"
+                 uploaderValue={this.state.uploader}/>
+       </div>
+      <div></div>
 
       </div>
     );
