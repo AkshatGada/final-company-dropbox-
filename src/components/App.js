@@ -6,17 +6,20 @@ import Web3 from 'web3';
 import './App.css';
 import  { uploadFileToIPFS }  from './pinata.js'
 import { createAlchemyWeb3 } from '@alch/alchemy-web3';
-
+import Moralis from 'moralis';
+import  {EvmChain} from "@moralisweb3/common-evm-utils"
+import tst from '../'
+import {Web3API} from '@moralisweb3/common-evm-utils'
 
 // const ipfsClient = require('ipfs-http-client')
 // const ipfs = ipfsClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' }) // leaving out the arguments will default to these values
 
 class App extends Component {
 
-  // async componentDidMount() {
-  //   await this.loadWeb3()
-  //    await this.loadBlockchainData()
-  // }
+  async componentDidMount() {
+
+     this.start();
+  }
 
   async loadWeb3() {
     if (window.ethereum) {
@@ -29,6 +32,11 @@ class App extends Component {
     else {
       window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
     }
+  }
+
+  start () {
+    this.setState({auth : true});
+    this.setState({authenticate : false});
   }
 
   // async loadBlockchainData() {
@@ -129,10 +137,114 @@ async loadeverythingup ()
 {
    this.loadWeb3();
    this.loadBlockchainData();
+  
 }
 
+// async checkNft() {
+
+//   try {
+//     await Moralis.start({
+//       apiKey: "NTr2S1mbZWXCcFkkPhz5KzkCK8AUQOgVO3cl65IZ7vRspqIKKC2bGke2Z3GetAwr"
+//     });
+  
+//     const response = await Moralis.EvmApi.nft.getContractNFTs({
+//       "chain": "0x1",
+//       "format": "decimal",
+//       "mediaItems": false,
+//       "address": "0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB"
+//     });
+  
+//     console.log(response.raw);
+//   } catch (e) {
+//     console.error(e);
+//   }
+// async  checkNft () {
+//     await Moralis.start({
+//       apiKey: "NTr2S1mbZWXCcFkkPhz5KzkCK8AUQOgVO3cl65IZ7vRspqIKKC2bGke2Z3GetAwr",
+//       // ...and any other configuration
+//     });
+  
+//     const allNFTs = [];
+  
+//     const address = this.state.account;
+//     console.log(this.state.account);
+  
+//     const chains = [EvmChain.ETHEREUM, EvmChain.BSC, EvmChain.POLYGON];
+  
+//     for (const chain of chains) {
+//       const response = await Moralis.EvmApi.nft.getWalletNFTs({
+//         address,
+//         chain,
+//       });
+  
+//       const nfts = response.getResult();
+//       const tokenAddress = nfts[0]?._data.tokenAddress._value
+//         this.setState({tokenAddress:tokenAddress});
+
+//     }
+  
+//   }
+
+async checkNft() {
+  await Moralis.start({
+    apiKey: "NTr2S1mbZWXCcFkkPhz5KzkCK8AUQOgVO3cl65IZ7vRspqIKKC2bGke2Z3GetAwr",
+    // ...and any other configuration
+  });
+
+  const address = "0x679A3d5A211486fDB5FB4a6B60C40216cA8b5B95";
+
+  const chain = "0x13881";
+
+  const response = await Moralis.EvmApi.nft.getNFTOwners({
+    address,
+    chain,
+  });
+
+const array = response.getResult();
+
+this.setState({array : array });
+
+const result = this.auth();
+
+console.log(result);
+
+
+}
+
+  auth () {
+    for( let i=0;i<(this.state.array).length;i++) {
+const auth = this.state.array[i]._data.ownerOf._value == this.state.account ?true:false;
+
+this.setState({auth : auth});
+this.setState({authenticate: auth});
+console.log(auth);
+return auth ;
+}
+
+ }
+
+
+
+
+
+//   await Moralis.start({ apiKey: 'NTr2S1mbZWXCcFkkPhz5KzkCK8AUQOgVO3cl65IZ7vRspqIKKC2bGke2Z3GetAwr' });
+
+// const nftList = await Moralis.EvmApi.nft.getContractNFTs({
+//   chain: 80001 ,// defualt 1 (ETH)  
+//   address: this.state.account,
+//     format : "decimal",
+//     mediaItems : false,
+// });
+
+// console.log(nftList.raw); 
+
+
+
+
+
+
   // Get file from user
-  captureFile = event => {
+  captureFile = async (event) => {
 
     event.preventDefault()
 
@@ -150,7 +262,43 @@ async loadeverythingup ()
       })
       console.log('buffer', this.state.buffer)
     }
+    try {
+    await this.getFileHash(); }
+    catch (e) {
+      console.log(e);
+    }
   }
+
+  // captureFile = event => {
+  //   event.preventDefault();
+  
+  //   const file = event.target.files[0];
+  //   console.log(file);
+  //   this.setState({ file: file });
+  
+  //   const reader = new window.FileReader();
+  //   reader.onloadend = () => {
+  //     // Read the file content as an ArrayBuffer
+  //     const buffer = reader.result;
+  
+  //     // Hash the file content using SHA-256 algorithm
+  //     crypto.subtle.digest('SHA-256', buffer).then(hashBuffer => {
+  //       // Convert the hash buffer to a hexadecimal string
+  //       const hashArray = Array.from(new Uint8Array(hashBuffer));
+  //       const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+  
+  //       console.log(hashHex);
+  //       this.setState({ hashHex: hashHex });
+  //     }).catch(error => {
+  //       console.error('Error calculating file hash:', error);
+  //     });
+  //   };
+  
+  //   reader.readAsArrayBuffer(file);
+  // }
+  
+  // Call the getFileHash function after setting up the reader
+  
 
   
   async  getFileHash() {
@@ -212,6 +360,7 @@ const num = 69 ;
 
       const ans = this.state.dstorage.methods.uploadFile(this.state.hashHex, num , this.state.type, this.state.name, this.state.url).send({ from: this.state.account });
       this.setState({ans :ans});
+      this.check();
       // this.setState({ loading: true })
       // // Assign value for the file without extension
       // if(this.state.type === ''){
@@ -273,7 +422,15 @@ const num = 69 ;
  
   render() { 
     return (
+      this.state.auth && !this.state.authenticate ? 
       <div>
+                <button onClick={() => this.loadeverythingup()}>LOAD EVERYTHING UP</button><br></br><br></br>
+<div>{this.state.account}</div>
+                <button onClick={() => this.checkNft()}>NFT CHECK</button><br></br><br></br>
+
+      </div>
+       : this.state.auth && this.state.authenticate ?
+       <div>
         <Navbar account={this.state.account} />
         { this.state.loading
           ? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
@@ -283,7 +440,6 @@ const num = 69 ;
               uploadFile={this.uploadFile}
             />
         }
-        <button onClick={() => this.loadeverythingup()}>LOAD EVERYTHING UP</button><br></br><br></br>
         <button onClick={() => this.getFileHash()}>HASH</button><br></br><br></br>
 
         <button onClick={() => this.check()}>CHECK</button>
@@ -299,6 +455,9 @@ const num = 69 ;
       <p>Uploader: {this.state.uploader}</p>
               </div>
 
+      </div> 
+     : <div>
+        <h1>You do not hold our nft</h1>
       </div>
     );
   }

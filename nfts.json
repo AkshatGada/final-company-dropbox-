@@ -1,0 +1,39 @@
+[
+    {
+        "chain": "0x89",
+        "contractType": "ERC1155",
+        "tokenAddress": "0x60576a64851c5b42e8c57e3e4a5cf3cf4eeb2ed6",
+        "tokenId": "2698",
+        "tokenUri": "https://api.mintkudos.xyz/metadata/0000000000000000000000000000000000000000000000000000000000000a8a",
+        "metadata": {
+            "name": "Alchemy University Early Access",
+            "description": "Get excited! This student pass provides you with early-access to Alchemy University's courses. You are on the fast track to earning your web3 degree!",
+            "external_url": "https://mintkudos.xyz/token/2698",
+            "image": "https://images.mintkudos.xyz/token/2698.mp4",
+            "attributes": [
+                {
+                    "trait_type": "community_name",
+                    "value": "Alchemy University"
+                },
+                {
+                    "trait_type": "created_by",
+                    "value": "0xe1Dd691a0181364f2cfF15543f4646fC203afD6F"
+                },
+                {
+                    "trait_type": "links",
+                    "value": [
+                        "https://university.alchemy.com/"
+                    ]
+                }
+            ]
+        },
+        "amount": 1,
+        "blockNumberMinted": "34583693",
+        "blockNumber": "35191665",
+        "ownerOf": "0xc5283bcaafff3c00f3250aa194dcd83b54b1db73",
+        "tokenHash": "a4b54576dc6a977b6aa1c46491a33bd0",
+        "lastMetadataSync": "2023-05-16T07:39:20.457Z",
+        "lastTokenUriSync": "2023-05-16T07:39:20.414Z",
+        "possibleSpam": false
+    }
+]
