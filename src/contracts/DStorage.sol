@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.8.18;
 
 contract DStorage {
   string public name = 'DStorage';
@@ -27,8 +27,7 @@ contract DStorage {
     address payable uploader
   );
 
-  constructor() public {
-  }
+  
 
   function uploadFile(string memory _fileHash, uint _fileSize, string memory _fileType, string memory _fileName, string memory _fileDescription) public {
     // Make sure the file hash exists
@@ -48,8 +47,13 @@ contract DStorage {
     fileCount ++;
 
     // Add File to the contract
-    files[fileCount] = File(fileCount, _fileHash, _fileSize, _fileType, _fileName, _fileDescription, now, msg.sender);
+    files[fileCount] = File(fileCount, _fileHash, _fileSize, _fileType, _fileName, _fileDescription, block.timestamp, payable(msg.sender));
     // Trigger an event
-    emit FileUploaded(fileCount, _fileHash, _fileSize, _fileType, _fileName, _fileDescription, now, msg.sender);
+    emit FileUploaded(fileCount, _fileHash, _fileSize, _fileType, _fileName, _fileDescription, block.timestamp, payable(msg.sender));
   }
+
+  function getFileCount() public view returns (uint256) {
+    return fileCount;
+  }
+  
 }
