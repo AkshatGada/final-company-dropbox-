@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import Navbar from './Navbar'
 import Main from './Main'
 import Web3 from 'web3';
-import './App.css';
 import  { uploadFileToIPFS }  from './pinata.js'
 import { createAlchemyWeb3 } from '@alch/alchemy-web3';
 import Moralis from 'moralis';
