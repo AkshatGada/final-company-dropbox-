@@ -10,6 +10,8 @@ import  {EvmChain} from "@moralisweb3/common-evm-utils"
 import tst from '../'
 import {Web3API} from '@moralisweb3/common-evm-utils'
 import Cards from './Cards';
+import { ethers } from "ethers";
+
 
 // const ipfsClient = require('ipfs-http-client')
 // const ipfs = ipfsClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' }) // leaving out the arguments will default to these values
@@ -104,27 +106,82 @@ class App extends Component {
   
 // }
 
+// const web3Handler = async () => {
+//   // console.log("pressed");
+
+//   const accounts = await window.ethereum.request({
+//     method: "eth_requestAccounts",
+//   });
+//   setAccount(accounts[0]);
+
+//   const provider = new ethers.providers.Web3Provider(window.ethereum); //ethereum spelling was wrong lol
+
+//   const signer = provider.getSigner();
+
+//   setProvider(provider);
+//   setSigner(signer);
+//   loadContracts(signer);
+// };
+
+// const loadContracts = async (signer) => {
+//   const marketplace = new ethers.Contract(
+//     MarketplaceAddress.address,
+//     MarketplaceAbi.abi,
+//     signer
+//   );
+//   setMarketplace(marketplace);
+
+//   const nft = new ethers.Contract(NFTAddress.address, NFT.abi, signer);
+//   // console.log(marketplace, "nft");
+//   setNft(nft);
+// };
+
 async loadBlockchainData() {
   if (window.ethereum) {
     try {
       await window.ethereum.enable();
 
-      const alchemy = createAlchemyWeb3('https://polygon-mumbai.g.alchemy.com/v2/aZ0iDaHlWI3hr6RgDk3F56iVT80IX2mc');
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
 
-      const accounts = await alchemy.eth.getAccounts();
+      console.log(accounts)
+
+    //  const alchemy = createAlchemyWeb3('https://polygon-mumbai.g.alchemy.com/v2/aZ0iDaHlWI3hr6RgDk3F56iVT80IX2mc');  //https://eth-mainnet.g.alchemy.com/v2/BLlEhRt9Uj3tJkNYwUXFbitQ8sJ5kjaQ
+
+    //  const accounts = await alchemy.eth.getAccounts();
       this.setState({ account: accounts[0] });
 
-      const address = '0xa79b277f796681c176ee0efc8891a264f77f4414';//0x0F0B38F4552E0B5B65F2D5d7A3E42767eFc5C4DE
-      const dstorage = new alchemy.eth.Contract(Dstorage, address);
+      //const provider = new ethers.BrowserProvider(window.ethereum)
+      console.log(provider,"provider");
+    const provider = new ethers.providers.Web3Provider(window.ethereum); //ethereum spelling was wrong lol
+
+  const signer = provider.getSigner();
+
+  this.setState({signer:signer});
+  console.log(signer);
+
+
+      const address = '0xBF921f94Fd9eF1738bE25D8CeCFDFE2C822c81B0';//0x664D6EbAbbD5cf656eD07A509AFfBC81f9615741  //0x4245CF4518CB2C280f5e9c6a03c90C147F80B4d9 
+      // polygon 0x0F0B38F4552E0B5B65F2D5d7A3E42767eFc5C4DE
+      //besu 0x5EB5888938e3fE7b334b1838B19C1e828c5148aA
+      // besu new 0xBF921f94Fd9eF1738bE25D8CeCFDFE2C822c81B0
+      console.log(Dstorage.abi,"abi");//0x0F0B38F4552E0B5B65F2D5d7A3E42767eFc5C4DE
+     //const dstorage = new alchemy.eth.Contract(Dstorage.abi, address);
 
       // Retrieve contract data to verify successful deployment
-      const contractData = await dstorage.methods.fileCount().call();
-      if (contractData) {
-        this.setState({ dstorage: dstorage });
-        console.log('DStorage contract loaded successfully.');
-      } else {
-        console.log('DStorage contract data not available.');
-      }
+
+     const dstorage = new ethers.Contract(address,Dstorage.abi, signer);
+     console.log(dstorage,"hello");
+     // const contractData = await dstorage.methods.fileCount().call();
+      
+      this.setState({ dstorage: dstorage });
+      // if (contractData) {
+       
+      //   console.log('DStorage contract loaded successfully.');
+      // } else {
+      //   console.log('DStorage contract data not available.');
+      // }
     } catch (error) {
       console.log('Error loading blockchain data:', error);
     }
@@ -191,7 +248,7 @@ async checkNft() {
     // ...and any other configuration
   });
 
-  const address = "0x679A3d5A211486fDB5FB4a6B60C40216cA8b5B95";
+  const address = "0x679A3d5A211486fDB5FB4a6B60C40216cA8b5B95";//0xC9Bc439c8723c5c6fdbBE14E5fF3a1224f8A0f7C
 
   const chain = "0x13881";
 
@@ -340,7 +397,6 @@ else {
       return;
     }
 
-   
     console.log("Submitting file to IPFS...")
 
     // Add file to the IPFS
@@ -372,16 +428,34 @@ else {
 
       
 const num = 69 ; 
+try {
+  const tx = await this.state.dstorage.uploadFile(
+    this.state.hashHex,
+    num,
+    this.state.type,
+    this.state.name,
+    this.state.url
+  );
 
-      const ans = this.state.dstorage.methods.uploadFile(this.state.hashHex, num , this.state.type, this.state.name, this.state.url).send({ from: this.state.account });
-      this.setState({ans :ans});
+  // Wait for the transaction to be mined
+  await tx.wait();
+
+  console.log("Transaction mined!");
+} catch (error) {
+  console.error("Error sending transaction:", error);
+}
+      // await this.state.dstorage.uploadFile(this.state.hashHex, num , this.state.type, this.state.name, this.state.url);
+     // this.setState({ans :ans});
       this.check();
 
     }
 
 
     async check() {
-     const count = await this.state.dstorage.methods.getFile().call();
+      
+        const count = await this.state.dstorage.getFile();
+      
+
     console.log(count);
   const fileId = parseInt(count[0]);
   this.setState({fileId : fileId});
@@ -456,9 +530,9 @@ const num = 69 ;
     </div>
   </div>
 </section>
-                {/* <button onClick={() => this.loadeverythingup()}>LOAD EVERYTHING UP</button>
+                 {/* <button onClick={() => this.loadeverythingup()}>LOAD EVERYTHING UP</button>
 <div><h1>Wallet address</h1>{this.state.account}</div>
-                <button onClick={() => this.checkNft()}>NFT CHECK</button> */}
+                <button onClick={() => this.checkNft()}>NFT CHECK</button>  */}
 
       </div>
        : this.state.auth && this.state.authenticate ?
